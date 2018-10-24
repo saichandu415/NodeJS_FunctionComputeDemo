@@ -1,0 +1,14 @@
+{
+  "name": "fc_code",
+  "version": "1.0.0",
+  "description": "Code for function compute",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sai Sarath",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^4.6.8"
+  }
+}

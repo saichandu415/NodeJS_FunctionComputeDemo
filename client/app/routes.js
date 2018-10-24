@@ -21,21 +21,24 @@ var funcName = keyInfo.fc_funcName;
 
 
 module.exports = function (app) {
-    app.get('/api/todos', function (req, res) {
+    app.post('/api/invoke', function (req, res) {
 
         var invokeReq = {
-            message : 'this function is invoked'
+            firstname: req.body.firstname,
+            message: req.body.message,
+            doMail: req.body.doMail,
+            toMail: req.body.toMail
         }
         
         var funcRes = {
-            message : ''
+            message: ''
         }
         
         client.invokeFunction(serviceName, funcName, JSON.stringify(invokeReq)).then(function(response){
             res.setHeader('Content-Type', 'application/json');
             funcRes.message = response;
             res.send(JSON.stringify(funcRes));
-        });        
+        });
     });
 
     app.post('/api/todos', function (req, res) {

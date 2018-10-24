@@ -1,0 +1,10 @@
+{
+    "accessKeyId": "<YOUR ACCESS KEY ID>",
+    "accessKeySecret": "<YOUR ACCESS KEY SECRET>",
+    "bucket": "<YOUR BUCKET NAME>",
+    "oss_region": "oss-<YOUR REGION NAME>",
+    "accountId": "<YOUR ACCOUNT ID WITHOUT QUOTES>",
+    "region": "<YOUR REGION NAME>",
+    "fc_serviceName": "<YOUR SERVERLESS SERVICE NAME>",
+    "fc_funcName": "<YOUR SERVERLESS FUNCTION NAME>"
+}
