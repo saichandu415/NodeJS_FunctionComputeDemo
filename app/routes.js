@@ -1,40 +1,56 @@
-var require
+var alioss = require('ali-oss');
+var fc = require('@alicloud/fc');
+var keyInfo = require('../config/keyInfo.json');
+
+const store = alioss({
+    accessKeyId: keyInfo.accessKeyId,
+    accessKeySecret: keyInfo.accessKeySecret,
+    bucket: keyInfo.bucket,
+    region: keyInfo.oss_region
+});
+
+var client = new fc(keyInfo.accountId, {
+    accessKeyID: keyInfo.accessKeyId,
+    accessKeySecret: keyInfo.accessKeySecret,
+    region: keyInfo.region,
+    timeout: 30000 // Request timeout in milliseconds, default is 10s
+});
+
+var serviceName = keyInfo.fc_serviceName;
+var funcName = keyInfo.fc_funcName;
+
 
 module.exports = function (app) {
-
-    // api ---------------------------------------------------------------------
-    // get all todos
     app.get('/api/todos', function (req, res) {
-        
-        var response={
-            FirstName:'Sai',
-            emailId:'saisarath151@gmail.com'
-        };
-        res.setHeader('Content-Type', 'application/json');
-        
-        res.send(JSON.stringify(response));
-    });
 
-    // create todo and send back all todos after creation
-    app.post('/api/todos', function (req, res) {
-
-        // create a todo, information comes from AJAX request from Angular
-        var response={
-            'FirstName':'Sai',
-            'emailId':'saisarath151@gmail.com'
+        var invokeReq = {
+            message : 'this function is invoked'
         }
-
-        res.send(response);
-
+        
+        var funcRes = {
+            message : ''
+        }
+        
+        client.invokeFunction(serviceName, funcName, JSON.stringify(invokeReq)).then(function(response){
+            res.setHeader('Content-Type', 'application/json');
+            funcRes.message = response;
+            res.send(JSON.stringify(funcRes));
+        });        
     });
 
-    // delete a todo
-    app.delete('/api/todos/:todo_id', function (req, res) {
-       
+    app.post('/api/todos', function (req, res) {
+        console.log(req.body);
+        var filepath = '/Users/sarathchandrap/Desktop/testData/' + req.body.filepath;
+        store.put(req.body.filepath, filepath).then((result) => {
+            console.log(result);
+            res.send(result);
+        });
     });
+
+
 
     // application -------------------------------------------------------------
     app.get('*', function (req, res) {
-        res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+        res.sendFile(__dirname + '/public/index.html'); // load the single view file 
     });
 };
